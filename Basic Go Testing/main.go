@@ -18,7 +18,7 @@ func main () {
 		FirstName: "Lol",
 		LastName: "Finder",
 		PhoneNumber: "9090",
-		Age: 40,
+		Age: 41,
 	}
 
 	fmt.Println(user.FirstName)
