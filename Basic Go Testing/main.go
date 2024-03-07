@@ -16,7 +16,7 @@ type User struct{
 func main () {
 	fmt.Println("Hello World")
 
-	whatToSay string = "Hello World"
+	whatToSay string = "Hello Soon"
 
 	fmt.Println(whatToSay)
 }
