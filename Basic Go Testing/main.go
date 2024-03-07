@@ -14,12 +14,13 @@ type User struct{
 }
 
 func main () {
-	user := User {
-		FirstName: "Lol",
-		LastName: "Finder",
-		PhoneNumber: "9090",
-		Age: 41,
-	}
+	fmt.Println("Hello World")
 
-	fmt.Println(user.FirstName)
+	whatToSay string = "Hello World"
+
+	fmt.Println(whatToSay)
+}
+
+func saySomething() string {
+	return "nothing"
 }
