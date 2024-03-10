@@ -2,25 +2,22 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"net/http"
 )
 
-type User struct{
-	FirstName string
-	LastName string
-	PhoneNumber string
-	Age int
-	BirthDate time.Time
-}
+func main() {
 
-func main () {
-	fmt.Println("Hello World")
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
-	whatToSay string = "Hello Soon"
+	n, err := fmt.Fprintf(w, "testing")
 
-	fmt.Println(whatToSay)
-}
+	if(err != nil) {
+		fmt.Println(err)
+	}
 
-func saySomething() string {
-	return "nothing"
+	fmt.Println(fmt.Sprintf("Number of bytes written: %d", n))
+	})
+
+	//! Start the server here
+	_ = http.ListenAndServe(":8080", nil)
 }
