@@ -10,23 +10,6 @@ import (
 // Package level variable
 var tc = make(map[string]*template.Template)
 
-// RenderTemplate will allow us to render the template
-//func RenderTemplateTest(w http.ResponseWriter, tmpl string) {
-//	parsedTemplate, fileErr := template.ParseFiles("./../../templates/"+tmpl, "./../../templates/base.layout.gohtml")
-//
-//	if fileErr != nil {
-//		fmt.Println("The templates are not being read properly, aborting")
-//		fmt.Println(fileErr)
-//		return
-//	}
-//	err := parsedTemplate.Execute(w, nil)
-//
-//	if err != nil {
-//		fmt.Println("Error parsing the template: ", err)
-//		return
-//	}
-//}
-
 func RenderTemplate(w http.ResponseWriter, t string) {
 
 	// Check if the template even exits in tc
@@ -36,6 +19,13 @@ func RenderTemplate(w http.ResponseWriter, t string) {
 	//! If present inMap would be set to true
 	if !inMap {
 		//? Create the template
+		log.Println("Creating a template as it hasn't been cached before")
+
+		err := createTemplate(t)
+		if err != nil {
+			fmt.Println("Error encountered here: ", err)
+			return
+		}
 	} else {
 		//! State that the template is present and being used
 		log.Println("Using a cached template")
@@ -51,12 +41,12 @@ func RenderTemplate(w http.ResponseWriter, t string) {
 
 func createTemplate(t string) error {
 	templates := []string{
-		fmt.Sprintf("./../../templates/%s", t),
-		"./../../templates/base.layout.gohtml",
+		fmt.Sprintf("./templates/%s", t),
+		"./templates/base.layout.gohtml",
 	}
 
 	//! Parse the template and then execute
-	tmpl, err := template.ParseFiles(templates[0], templates[1])
+	tmpl, err := template.ParseFiles(templates...)
 
 	if err != nil {
 		fmt.Println("Template cannot be parsed due to", err)
