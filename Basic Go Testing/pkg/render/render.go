@@ -1,24 +1,40 @@
 package render
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"path/filepath"
 )
 
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	//! Create the template cache
+	tc, err := createTemplateCache()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//? Get the requested template from the cache
 
-	//! render the template
+	t, ok := tc[tmpl]
 
-	parsedTemplate, _ := template.ParseFiles("./templates/"+tmpl, "./templates/base.layout.tmpl")
-	err := parsedTemplate.Execute(w, nil)
+	if !ok {
+		log.Fatal(err)
+	}
 
+	buf := new(bytes.Buffer)
+
+	err = t.Execute(buf, nil)
 	if err != nil {
-		fmt.Println("Error parsing template", err)
+		log.Println("Error due to the map", err)
+	}
+
+	//! render the template
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		log.Println(err)
 	}
 }
 
@@ -54,7 +70,7 @@ func createTemplateCache() (map[string]*template.Template, error) {
 
 		//! go through layout and see if you have found any matches
 		if len(layouts) > 0 {
-			ts, err = template.ParseGlob("./templates/*.layout.gohtml")
+			ts, err = ts.ParseGlob("./templates/*.layout.gohtml")
 			if err != nil {
 				return myCache, err
 			}
