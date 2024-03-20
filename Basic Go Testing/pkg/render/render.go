@@ -3,57 +3,20 @@ package render
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 )
 
-// Package level variable
-var tc = make(map[string]*template.Template)
+func RenderTemplate(w http.ResponseWriter, tmpl string) {
+	//! Create the template cache
 
-func RenderTemplate(w http.ResponseWriter, t string) {
+	//? Get the requested template from the cache
 
-	// Check if the template even exits in tc
+	//! render the template
 
-	tmpl, inMap := tc[t]
-
-	//! If present inMap would be set to true
-	if !inMap {
-		//? Create the template
-		log.Println("Creating a template as it hasn't been cached before")
-
-		err := createTemplate(t)
-		if err != nil {
-			fmt.Println("Error encountered here: ", err)
-			return
-		}
-	} else {
-		//! State that the template is present and being used
-		log.Println("Using a cached template")
-	}
-
-	err := tmpl.Execute(w, nil)
+	parsedTemplate, _ := template.ParseFiles("./templates/"+tmpl, "./templates/base.layout.tmpl")
+	err := parsedTemplate.Execute(w, nil)
 
 	if err != nil {
-		fmt.Println("There is an error while reading the template: ", err)
-		return
+		fmt.Println("Error parsing template", err)
 	}
-}
-
-func createTemplate(t string) error {
-	templates := []string{
-		fmt.Sprintf("./templates/%s", t),
-		"./templates/base.layout.gohtml",
-	}
-
-	//! Parse the template and then execute
-	tmpl, err := template.ParseFiles(templates...)
-
-	if err != nil {
-		fmt.Println("Template cannot be parsed due to", err)
-	}
-	//! Store it inside the holder
-	tc[t] = tmpl
-
-	//! No error then return as such
-	return nil
 }
