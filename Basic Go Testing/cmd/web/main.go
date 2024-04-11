@@ -1,6 +1,7 @@
 package main
 
 import (
+	"basicgotesting/pkg/handlers"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,8 +11,8 @@ const portNumber = ":8080"
 
 func main() {
 	//! Use the handlers and listen to the port
-	http.HandleFunc("/", Home)
-	http.HandleFunc("/about", About)
+	http.HandleFunc("/", handlers.Home)
+	http.HandleFunc("/about", handlers.About)
 
 	//! Print out progress to the data
 	fmt.Printf("Starting the server on this port: %s", portNumber)

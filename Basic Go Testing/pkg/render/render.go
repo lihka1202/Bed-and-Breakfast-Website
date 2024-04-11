@@ -1,4 +1,4 @@
-package main
+package render
 
 import (
 	"html/template"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func renderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	parsedTemplate, parseError := template.ParseFiles("./templates/" + tmpl)
 	if parseError != nil {
 		log.Println("Something went wrong when we were trying to read the template")
