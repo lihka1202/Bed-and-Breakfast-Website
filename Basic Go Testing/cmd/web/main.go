@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 const portNumber = ":8080"
 
 func main() {
+	//! Print the working directory here
+	fmt.Println(os.Getwd())
+
 	//! Use the handlers and listen to the port
 	http.HandleFunc("/", handlers.Home)
 	http.HandleFunc("/about", handlers.About)
@@ -22,4 +26,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("This is the error %s", err)
 	}
+
 }
