@@ -8,7 +8,8 @@ import (
 
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	//! Note that using "./temaplates" is bad as it doesnt account for the working directory, in this case stick to this
-	parsedTemplate, parseError := template.ParseFiles("./../../templates/" + tmpl)
+
+	parsedTemplate, parseError := template.ParseFiles("./../../templates/"+tmpl, "./../../templates/base.layout.gohtml")
 	if parseError != nil {
 		log.Println("Something went wrong when we were trying to read the template")
 		log.Printf("%v", parseError)
