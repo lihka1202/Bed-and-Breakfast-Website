@@ -16,7 +16,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	//! Create a template cache
 	//? Print this for now
-	tc, err := createTemplate()
+	tc, err := CreateTemplate()
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,8 +41,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 }
 
-// createTemplate
-func createTemplate() (map[string]*template.Template, error) {
+// CreateTemplate
+func CreateTemplate() (map[string]*template.Template, error) {
 
 	var myCache = map[string]*template.Template{}
 
