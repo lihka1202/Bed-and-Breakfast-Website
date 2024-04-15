@@ -21,8 +21,17 @@ func NewTemplateCache(a *config.AppConfig) {
 	app = a
 }
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	//! Use the template cache created in main.go
-	tc := app.TemplateCache
+	//! make the variable
+	var tc map[string]*template.Template
+
+	//! Check the app config
+	if app.UseCache {
+		//! Reads from the template
+		tc = app.TemplateCache
+	} else {
+		//! Reads from disk
+		tc, _ = CreateTemplate()
+	}
 
 	//! Get the requested templates as needed
 	t, ok := tc[tmpl]

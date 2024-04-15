@@ -23,15 +23,20 @@ func main() {
 	}
 
 	//! Assign the template cache in the app config to be this
-
 	app := config.AppConfig{TemplateCache: tc, UseCache: true}
 
 	//! Set the global app config in render.go to have the same value
 	render.NewTemplateCache(&app)
 
+	//! Create a new repo
+	Repo := handlers.NewRepo(&app)
+
+	//! Create new handlers
+	handlers.NewHandlers(Repo)
+
 	//! Use the handlers and listen to the port
-	http.HandleFunc("/", handlers.Home)
-	http.HandleFunc("/about", handlers.About)
+	http.HandleFunc("/", handlers.Repo.Home)
+	http.HandleFunc("/about", handlers.Repo.About)
 
 	//! Print out progress to the data
 	fmt.Printf("Starting the server on this port: %s", portNumber)
