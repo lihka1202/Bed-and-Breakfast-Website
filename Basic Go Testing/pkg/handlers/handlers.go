@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"basicgotesting/pkg/config"
+	"basicgotesting/pkg/models"
 	"basicgotesting/pkg/render"
 	"net/http"
 )
@@ -26,10 +27,15 @@ func NewHandlers(r *Repository) {
 
 // Home is the home page handler
 func (rp *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.page.gohtml")
+	//! Get some data here
+	stringMap := map[string]string{
+		"test": "Hello World",
+	}
+	//! Pass as a pointer to preserve usage and save time
+	render.RenderTemplate(w, "home.page.gohtml", &models.TemplateData{StringMap: stringMap})
 }
 
 // About is the about page handler
 func (rp *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "about.page.gohtml")
+	render.RenderTemplate(w, "about.page.gohtml", &models.TemplateData{})
 }

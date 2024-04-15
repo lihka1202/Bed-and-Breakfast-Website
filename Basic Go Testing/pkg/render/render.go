@@ -2,6 +2,7 @@ package render
 
 import (
 	"basicgotesting/pkg/config"
+	"basicgotesting/pkg/models"
 	"bytes"
 	"fmt"
 	"html/template"
@@ -20,7 +21,12 @@ func NewTemplateCache(a *config.AppConfig) {
 	//! Set the global app pointer here
 	app = a
 }
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	//! When we want to add data, we can add then
+	return td
+}
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	//! make the variable
 	var tc map[string]*template.Template
 
@@ -41,7 +47,9 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	err := t.Execute(buf, nil)
+	//! Mod the data should you wish to do so
+	td = AddDefaultData(td)
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Fatal("Something went wrong while we dealt with the buffer")
 	}
@@ -53,7 +61,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 }
 
-// CreateTemplate
+// CreateTemplate creates the template
 func CreateTemplate() (map[string]*template.Template, error) {
 
 	var myCache = map[string]*template.Template{}
