@@ -1,6 +1,7 @@
 package render
 
 import (
+	"basicgotesting/pkg/config"
 	"bytes"
 	"fmt"
 	"html/template"
@@ -12,24 +13,26 @@ import (
 // ! Make a universal template cache to store parsed templates
 var tc = make(map[string]*template.Template)
 
+// ! Create a config for this
+var app *config.AppConfig
+
+func NewTemplateCache(a *config.AppConfig) {
+	//! Set the global app pointer here
+	app = a
+}
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
+	//! Use the template cache created in main.go
+	tc := app.TemplateCache
 
-	//! Create a template cache
-	//? Print this for now
-	tc, err := CreateTemplate()
-
-	if err != nil {
-		log.Fatal(err)
-	}
 	//! Get the requested templates as needed
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatal(err)
+		log.Fatal(ok)
 	}
 
 	buf := new(bytes.Buffer)
 
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, nil)
 	if err != nil {
 		log.Fatal("Something went wrong while we dealt with the buffer")
 	}
