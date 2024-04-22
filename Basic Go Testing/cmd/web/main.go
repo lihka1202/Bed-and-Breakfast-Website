@@ -34,17 +34,23 @@ func main() {
 	//! Create new handlers
 	handlers.NewHandlers(Repo)
 
-	//! Use the handlers and listen to the port
-	http.HandleFunc("/", handlers.Repo.Home)
-	http.HandleFunc("/about", handlers.Repo.About)
-
 	//! Print out progress to the data
 	fmt.Printf("Starting the server on this port: %s", portNumber)
 
-	//! Actually start the server
-	err := http.ListenAndServe(portNumber, nil)
-	if err != nil {
-		log.Fatalf("This is the error %s", err)
+	//! Actually start the server, pass in the handlers using PAT
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
 	}
+
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//err := http.ListenAndServe(portNumber, nil)
+	//if err != nil {
+	//	log.Fatalf("This is the error %s", err)
+	//}
 
 }
