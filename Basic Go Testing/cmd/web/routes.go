@@ -14,6 +14,9 @@ func routes(app *config.AppConfig) http.Handler {
 	//! In the event of panics, does a better job at handling them and gracefully letting it down
 	mux.Use(middleware.Recoverer)
 
+	//! Custom middleware
+	mux.Use(NoSurf)
+
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/about", handlers.Repo.About)
 	return mux
