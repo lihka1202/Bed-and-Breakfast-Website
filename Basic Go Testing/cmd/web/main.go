@@ -48,9 +48,4 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//err := http.ListenAndServe(portNumber, nil)
-	//if err != nil {
-	//	log.Fatalf("This is the error %s", err)
-	//}
-
 }
