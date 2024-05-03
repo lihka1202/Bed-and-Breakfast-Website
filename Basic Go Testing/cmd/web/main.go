@@ -5,12 +5,17 @@ import (
 	"basicgotesting/pkg/handlers"
 	"basicgotesting/pkg/render"
 	"fmt"
+	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 const portNumber = ":8080"
+
+var app config.AppConfig
+var session *scs.SessionManager
 
 func main() {
 	//! Print the working directory here
@@ -23,8 +28,25 @@ func main() {
 	}
 
 	//! Assign the template cache in the app config to be this
-	app := config.AppConfig{TemplateCache: tc, UseCache: true}
+	app = config.AppConfig{TemplateCache: tc, UseCache: true}
 
+	//! Change this to true, when going in to production
+	app.InProduction = false
+
+	// ? Create the sessions package
+	session = scs.New()
+
+	//! Set the sessions time out to be 24 hours
+	session.Lifetime = 24 * time.Hour
+
+	//! cookie options
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
+
+	//! Make sure that sessions is held in appConfig
+	//? No use as of now, but can be used in the future
+	app.Session = session
 	//! Set the global app config in render.go to have the same value
 	render.NewTemplateCache(&app)
 
