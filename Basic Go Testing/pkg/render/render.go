@@ -26,6 +26,7 @@ func AddDefaultData(td *models.TemplateData) *models.TemplateData {
 	//! When we want to add data, we can add then
 	return td
 }
+
 func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	//! make the variable
 	var tc map[string]*template.Template
